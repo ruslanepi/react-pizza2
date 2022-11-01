@@ -2,6 +2,7 @@ import Header from './components/Header'
 import Categories from './components/Categories'
 import Sorting from './components/Sorting'
 import PizzaBlock from './components/PizzaBlock'
+import Skeleton from './components/PizzaBlock/Skeleton'
 import './App.css'
 import './scss/app.scss'
 
@@ -34,10 +35,20 @@ function App() {
 
           <h2 className='content__title'>Все пиццы</h2>
           <div className='content__items'>
-            {loading && 'loading'}
-            {items.map((pizza) => {
-              return <PizzaBlock key={pizza.id} {...pizza} />
-            })}
+            {loading ? (
+              [...new Array(6)].map((_, index) => {
+                return <Skeleton key={index} />
+              })
+            ) : (
+              <>
+                {error && <p>{error.message}</p>}
+
+                {items &&
+                  items.map((pizza) => {
+                    return <PizzaBlock key={pizza.id} {...pizza} />
+                  })}
+              </>
+            )}
           </div>
         </div>
       </div>
