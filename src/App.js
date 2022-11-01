@@ -5,9 +5,23 @@ import PizzaBlock from './components/PizzaBlock'
 import './App.css'
 import './scss/app.scss'
 
-import pizzas from './assets/pizzas.json'
+import useAxios from './hooks/useAxios'
+
+import { useEffect } from 'react'
+import { useState } from 'react'
+
+const dataUrl = 'https://63612c1eaf66cc87dc251bdc.mockapi.io/items'
 
 function App() {
+  const [items, setItems] = useState([])
+  const { response, loading, error } = useAxios({ dataUrl })
+
+  useEffect(() => {
+    if (response !== null) {
+      setItems(response)
+    }
+  }, [response])
+
   return (
     <div className='wrapper'>
       <Header />
@@ -20,7 +34,8 @@ function App() {
 
           <h2 className='content__title'>Все пиццы</h2>
           <div className='content__items'>
-            {pizzas.map((pizza) => {
+            {loading && 'loading'}
+            {items.map((pizza) => {
               return <PizzaBlock key={pizza.id} {...pizza} />
             })}
           </div>
