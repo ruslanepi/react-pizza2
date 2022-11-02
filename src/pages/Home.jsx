@@ -15,9 +15,10 @@ const Home = () => {
     if (response !== null) {
       setItems(response)
     }
+    window.scroll(0, 0)
   }, [response])
   return (
-    <>
+    <div className='container'>
       <div className='content__top'>
         <Categories />
         <Sorting />
@@ -39,7 +40,7 @@ const Home = () => {
           </>
         )}
       </div>
-    </>
+    </div>
   )
 }
 
