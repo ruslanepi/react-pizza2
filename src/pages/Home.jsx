@@ -7,11 +7,16 @@ import { useEffect, useState } from 'react'
 
 const dataUrl = 'https://63612c1eaf66cc87dc251bdc.mockapi.io/items'
 
-const Home = () => {
+const Home = ({ searchValue }) => {
   const [items, setItems] = useState([])
   const [activeCategory, setActiveCategory] = useState(0)
   const [activeSortType, setActiveSortType] = useState({ name: 'популярности', sortBy: 'rating' })
-  const { response, loading, error } = useAxios({ dataUrl, activeCategory, activeSortType })
+  const { response, loading, error } = useAxios({
+    dataUrl,
+    activeCategory,
+    activeSortType,
+    searchValue,
+  })
 
   useEffect(() => {
     if (response !== null) {
