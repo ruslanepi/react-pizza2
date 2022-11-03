@@ -1,13 +1,16 @@
 import React from 'react'
 import { useState } from 'react'
 
-const Sorting = () => {
+const Sorting = ({ activeSortType, onClickSetActiveSortType }) => {
   const [openMenu, setOpenMenu] = useState(false)
-  const menuItems = ['популярности', 'цене', 'алфавиту']
-  const [activeMenuItem, setActiveMenuItem] = useState(0)
+  const menuItems = [
+    { name: 'популярности', sortBy: 'rating' },
+    { name: 'цене', sortBy: 'price' },
+    { name: 'алфавиту', sortBy: 'title' },
+  ]
 
   const activeMenuHandler = (index) => {
-    setActiveMenuItem(index)
+    onClickSetActiveSortType(index)
     setOpenMenu(false)
   }
 
@@ -26,7 +29,7 @@ const Sorting = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpenMenu(!openMenu)}>{menuItems[activeMenuItem]}</span>
+        <span onClick={() => setOpenMenu(!openMenu)}>{activeSortType.name}</span>
       </div>
       {openMenu && (
         <div className='sort__popup'>
@@ -34,10 +37,10 @@ const Sorting = () => {
             {menuItems.map((menuItem, index) => {
               return (
                 <li
-                  onClick={() => activeMenuHandler(index)}
-                  className={activeMenuItem === index ? 'active' : ''}
+                  onClick={() => activeMenuHandler(menuItem)}
+                  className={activeSortType.name === menuItems[index].name ? 'active' : ''}
                   key={index}>
-                  {menuItem}
+                  {menuItem.name}
                 </li>
               )
             })}

@@ -9,7 +9,9 @@ const dataUrl = 'https://63612c1eaf66cc87dc251bdc.mockapi.io/items'
 
 const Home = () => {
   const [items, setItems] = useState([])
-  const { response, loading, error } = useAxios({ dataUrl })
+  const [activeCategory, setActiveCategory] = useState(0)
+  const [activeSortType, setActiveSortType] = useState({ name: 'популярности', sortBy: 'rating' })
+  const { response, loading, error } = useAxios({ dataUrl, activeCategory, activeSortType })
 
   useEffect(() => {
     if (response !== null) {
@@ -17,11 +19,18 @@ const Home = () => {
     }
     window.scroll(0, 0)
   }, [response])
+
   return (
     <div className='container'>
       <div className='content__top'>
-        <Categories />
-        <Sorting />
+        <Categories
+          activeCategory={activeCategory}
+          onClickActiveCategory={(id) => setActiveCategory(id)}
+        />
+        <Sorting
+          activeSortType={activeSortType}
+          onClickSetActiveSortType={(id) => setActiveSortType(id)}
+        />
       </div>
       <h2 className='content__title'>Все пиццы</h2>
       <div className='content__items'>
