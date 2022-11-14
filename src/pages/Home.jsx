@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 
 const dataUrl = 'https://63612c1eaf66cc87dc251bdc.mockapi.io/items'
 
-const Home = ({ searchValue }) => {
+const Home = () => {
   const [items, setItems] = useState([])
   const [activeCategory, setActiveCategory] = useState(0)
   const [activeSortType, setActiveSortType] = useState({ name: 'популярности', sortBy: 'rating' })
@@ -15,7 +15,6 @@ const Home = ({ searchValue }) => {
     dataUrl,
     activeCategory,
     activeSortType,
-    searchValue,
   })
 
   useEffect(() => {
