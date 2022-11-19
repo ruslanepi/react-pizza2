@@ -1,7 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
+import { setActiveSortType } from '../redux/slices/filterSlice'
+import { useSelector, useDispatch } from 'react-redux'
+const Sorting = () => {
+  const activeSortType = useSelector((state) => state.filter.activeSortType)
+  const dispatch = useDispatch()
 
-const Sorting = ({ activeSortType, onClickSetActiveSortType }) => {
   const [openMenu, setOpenMenu] = useState(false)
   const menuItems = [
     { name: 'популярности', sortBy: 'rating' },
@@ -10,7 +14,7 @@ const Sorting = ({ activeSortType, onClickSetActiveSortType }) => {
   ]
 
   const activeMenuHandler = (index) => {
-    onClickSetActiveSortType(index)
+    dispatch(setActiveSortType(index))
     setOpenMenu(false)
   }
 

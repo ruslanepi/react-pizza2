@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useContext } from 'react'
 import { SearchContext } from '../App'
 
-const useAxios = ({ dataUrl: url, activeCategory, activeSortType }) => {
+const useAxios = ({ dataUrl: url, activeCategoryId, activeSortType }) => {
   const [response, setResponse] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -12,11 +12,11 @@ const useAxios = ({ dataUrl: url, activeCategory, activeSortType }) => {
   const { searchValue } = useContext(SearchContext)
 
   let currentUrl = ''
-  const currentActiveCategory = activeCategory > 0 ? 'category' : ''
+  const currentActiveCategory = activeCategoryId > 0 ? 'category' : ''
   if (searchValue) {
     currentUrl = `${url}?search=${searchValue}`
   } else {
-    currentUrl = `${url}?${currentActiveCategory}=${activeCategory}&sortBy=${activeSortType.sortBy}&order=asc`
+    currentUrl = `${url}?${currentActiveCategory}=${activeCategoryId}&sortBy=${activeSortType.sortBy}&order=asc`
   }
 
   const fetchData = () => {
@@ -32,7 +32,7 @@ const useAxios = ({ dataUrl: url, activeCategory, activeSortType }) => {
 
   useEffect(() => {
     fetchData()
-  }, [url, activeCategory, activeSortType, searchValue])
+  }, [url, activeCategoryId, activeSortType, searchValue])
 
   return { response, loading, error }
 }

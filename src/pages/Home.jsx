@@ -4,16 +4,18 @@ import PizzaBlock from '../components/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
 import useAxios from '../hooks/useAxios'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 const dataUrl = 'https://63612c1eaf66cc87dc251bdc.mockapi.io/items'
 
 const Home = () => {
+  //из-за useAxios приъодится снова получать activeSortType, activeCategoryId, парвильно ли это?
+  const { activeCategoryId, activeSortType } = useSelector((state) => state.filter)
+
   const [items, setItems] = useState([])
-  const [activeCategory, setActiveCategory] = useState(0)
-  const [activeSortType, setActiveSortType] = useState({ name: 'популярности', sortBy: 'rating' })
   const { response, loading, error } = useAxios({
     dataUrl,
-    activeCategory,
+    activeCategoryId,
     activeSortType,
   })
 
@@ -27,14 +29,8 @@ const Home = () => {
   return (
     <div className='container'>
       <div className='content__top'>
-        <Categories
-          activeCategory={activeCategory}
-          onClickActiveCategory={(id) => setActiveCategory(id)}
-        />
-        <Sorting
-          activeSortType={activeSortType}
-          onClickSetActiveSortType={(id) => setActiveSortType(id)}
-        />
+        <Categories />
+        <Sorting />
       </div>
       <h2 className='content__title'>Все пиццы</h2>
       <div className='content__items'>
