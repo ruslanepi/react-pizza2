@@ -8,15 +8,24 @@ import { useState, createContext } from 'react'
 
 import { Routes, Route } from 'react-router-dom'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increment } from './redux/slices/filterSlice'
+
 export const SearchContext = createContext('')
 
 function App() {
   const [searchValue, setSearchValue] = useState('')
 
+  const count = useSelector((state) => state.counter.value)
+  const dispatch = useDispatch()
+
   return (
     <div className='wrapper'>
       <SearchContext.Provider value={{ searchValue, setSearchValue }}>
         <Header />
+        <button onClick={() => dispatch(increment())}>incr</button>
+        {count}
+        <button onClick={() => dispatch(decrement())}>decr</button>
         <div className='content'>
           <Routes>
             <Route path='/' element={<Home />}></Route>
