@@ -1,10 +1,31 @@
-import React from 'react'
-import { useContext } from 'react'
+import React, { useCallback } from 'react'
+import { useRef, useContext, useState } from 'react'
+import debounce from 'lodash.debounce'
 import { SearchContext } from '../../App'
 import styles from './Search.module.scss'
 const Search = () => {
   //context
-  const { searchValue, setSearchValue } = useContext(SearchContext)
+  const { setSearchValue } = useContext(SearchContext)
+  const [value, setValue] = useState('')
+  const inputEl = useRef(null)
+
+  const onClearHandler = () => {
+    setSearchValue('')
+    setValue('')
+    inputEl.current.focus()
+  }
+
+  const updateSearchValue = useCallback(
+    debounce((str) => {
+      setSearchValue(str)
+    }, 1000),
+    [],
+  )
+
+  const onChangeInput = (event) => {
+    setValue(event.target.value)
+    updateSearchValue(event.target.value)
+  }
 
   return (
     <div className={styles.root}>
@@ -20,15 +41,16 @@ const Search = () => {
       </svg>
 
       <input
-        onChange={(e) => setSearchValue(e.target.value)}
+        onChange={(e) => onChangeInput(e)}
         className={styles.input}
         placeholder='Поиск пиццы'
-        value={searchValue}
+        value={value}
+        ref={inputEl}
       />
 
-      {searchValue && (
+      {value && (
         <svg
-          onClick={() => setSearchValue('')}
+          onClick={() => onClearHandler()}
           className={styles.icon_close}
           data-name='Capa 1'
           id='Capa_1'
