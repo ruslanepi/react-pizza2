@@ -18,8 +18,12 @@ const filterSlice = createSlice({
     setActiveSortType(state, action) {
       state.activeSortType = action.payload
     },
+    setFilters(state, action) {
+      state.activeSortType.sortBy = action.payload.sortType
+      state.activeCategoryId = Number(action.payload.categoryId)
+    },
   },
 })
 
-export const { setActiveCategoryId, setActiveSortType } = filterSlice.actions
+export const { setActiveCategoryId, setActiveSortType, setFilters } = filterSlice.actions
 export default filterSlice.reducer
