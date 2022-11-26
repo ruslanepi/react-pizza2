@@ -2,9 +2,12 @@ import React from 'react'
 import { useState } from 'react'
 import { setActiveSortType } from '../redux/slices/filterSlice'
 import { useSelector, useDispatch } from 'react-redux'
+import { useRef } from 'react'
+import { useEffect } from 'react'
 const Sorting = () => {
   const activeSortType = useSelector((state) => state.filter.activeSortType)
   const dispatch = useDispatch()
+  const sortRef = useRef()
 
   const [openMenu, setOpenMenu] = useState(false)
   const menuItems = [
@@ -18,8 +21,20 @@ const Sorting = () => {
     setOpenMenu(false)
   }
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.path.includes(sortRef.current)) {
+        setOpenMenu(false)
+      }
+    }
+    document.body.addEventListener('click', handleClickOutside)
+    return () => {
+      document.body.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
+
   return (
-    <div className='sort'>
+    <div ref={sortRef} className='sort'>
       <div className='sort__label'>
         <svg
           width='10'
