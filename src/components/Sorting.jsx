@@ -23,14 +23,12 @@ const Sorting = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.path.includes(sortRef.current)) {
+      if (!event.composedPath().includes(sortRef.current)) {
         setOpenMenu(false)
       }
     }
     document.body.addEventListener('click', handleClickOutside)
-    return () => {
-      document.body.removeEventListener('click', handleClickOutside)
-    }
+    return () => document.body.removeEventListener('click', handleClickOutside)
   }, [])
 
   return (
