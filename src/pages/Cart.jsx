@@ -3,16 +3,19 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import CartItem from '../components/CartItem'
 import { clearCart } from '../redux/slices/cartSlice'
+import CartEmpty from '../components/CartEmpty'
 const Cart = () => {
   const dispatch = useDispatch()
-  const { items, totalPrice } = useSelector((state) => state.cart)
-
-  const itemsAmount = items.reduce((count, item) => {
-    return item.count + count
-  }, 0)
+  const { items, totalPrice, totalCount } = useSelector((state) => state.cart)
 
   const onClearCart = () => {
-    dispatch(clearCart())
+    if (window.confirm('Очистить корзину?')) {
+      dispatch(clearCart())
+    }
+  }
+
+  if (!totalPrice) {
+    return <CartEmpty />
   }
 
   return (
@@ -98,7 +101,7 @@ const Cart = () => {
         <div className='cart__bottom'>
           <div className='cart__bottom-details'>
             <span>
-              Всего пицц: <b>{itemsAmount} шт.</b>
+              Всего пицц: <b>{totalCount} шт.</b>
             </span>
             <span>
               Сумма заказа: <b>{totalPrice} ₽</b>
