@@ -95,7 +95,7 @@ const Cart = () => {
         </div>
         <div className='cart__items'>
           {items.map((item, index) => {
-            return <CartItem key={index} id={item.id} />
+            return <CartItem key={index} uniqueItemId={item.uniqueItemId} />
           })}
         </div>
         <div className='cart__bottom'>

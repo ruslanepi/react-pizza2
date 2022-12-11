@@ -8,21 +8,27 @@ const typeNames = ['Тонкое', 'Традиционное']
 const PizzaBlock = (props) => {
   const dispatch = useDispatch()
   const { id, title, price, imageUrl: image, sizes, types } = props
-  const cartItem = useSelector((state) => state.cart.items.find((item) => item.id === id))
+  const cartItem = useSelector((state) => state.cart.items.filter((item) => item.id === id))
 
+  const countOfType = cartItem.reduce((sum, item) => {
+    return item.count + sum
+  }, 0)
+  console.log(countOfType)
   const [activeType, setActiveType] = useState(0)
   const [activeSize, setActiveSize] = useState(0)
 
   const onClickAdd = () => {
     const item = {
       id,
+      uniqueItemId: id + '_' + typeNames[activeType] + '_' + sizes[activeSize],
       title,
       price,
       image,
       type: typeNames[activeType],
       size: sizes[activeSize],
     }
-    addItem(item)
+
+    // dispatch(addItem(item))
     dispatch(addItem(item))
   }
 
@@ -71,7 +77,7 @@ const PizzaBlock = (props) => {
             />
           </svg>
           <span>Добавить</span>
-          {cartItem && <i>{cartItem ? cartItem.count : '0'}</i>}
+          {countOfType > 0 && <i>{countOfType ? countOfType : ''}</i>}
         </button>
       </div>
     </div>

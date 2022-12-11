@@ -2,23 +2,23 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearItem, removeItem, addItem } from '../redux/slices/cartSlice'
 
-const CartItem = ({ id }) => {
+const CartItem = ({ uniqueItemId }) => {
   const dispatch = useDispatch()
 
   const { title, price, count, image, type, size } = useSelector((state) =>
-    state.cart.items.find((item) => item.id === id),
+    state.cart.items.find((item) => item.uniqueItemId === uniqueItemId),
   )
 
   const onClickClearItem = () => {
-    dispatch(clearItem(id))
+    dispatch(clearItem(uniqueItemId))
   }
 
   const onClickRemoveItem = () => {
-    dispatch(removeItem(id))
+    dispatch(removeItem(uniqueItemId))
   }
 
   const onClickAdd = () => {
-    dispatch(addItem({ id }))
+    dispatch(addItem({ uniqueItemId }))
   }
 
   return (
