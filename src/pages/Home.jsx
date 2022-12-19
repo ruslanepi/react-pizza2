@@ -4,28 +4,38 @@ import Categories from '../components/Categories'
 import Sorting from '../components/Sorting'
 import PizzaBlock from '../components/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
-import useAxios from '../hooks/useAxios'
-import { useEffect, useState } from 'react'
+
+import { useEffect, useRef, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFilters } from '../redux/slices/filterSlice'
-import { useRef } from 'react'
+
+import { SearchContext } from '../App'
+import { fetchPizzas } from '../redux/slices/pizzaSlice'
 
 const dataUrl = 'https://63612c1eaf66cc87dc251bdc.mockapi.io/items'
 
 const Home = () => {
+  const { searchValue } = useContext(SearchContext)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const isSearch = useRef(false)
   const isMounted = useRef(false)
-  //из-за useAxios приходится снова получать activeSortType, activeCategoryId, парвильно ли это?
+
+  const { items, status } = useSelector((state) => state.pizza)
   const { activeCategoryId, activeSortType } = useSelector((state) => state.filter)
 
-  const [items, setItems] = useState([])
-  const { response, loading, error } = useAxios({
-    dataUrl,
-    activeCategoryId,
-    activeSortType,
-  })
+  const getPizzas = async () => {
+    let currentUrl = ''
+    const currentActiveCategory = activeCategoryId > 0 ? 'category' : ''
+    if (searchValue) {
+      currentUrl = `${dataUrl}?search=${searchValue}`
+    } else {
+      currentUrl = `${dataUrl}?${currentActiveCategory}=${activeCategoryId}&sortBy=${activeSortType.sortBy}&order=asc`
+    }
+
+    dispatch(fetchPizzas(currentUrl))
+  }
 
   //парсинг строки из url, обновление state ИЗ url
   useEffect(() => {
@@ -56,14 +66,12 @@ const Home = () => {
   //запрос на пиццы
   useEffect(() => {
     if (!isSearch.current) {
-      if (response !== null) {
-        setItems(response)
-      }
+      getPizzas()
     }
     isSearch.current = false
 
     window.scroll(0, 0)
-  }, [response])
+  }, [])
 
   return (
     <div className='container'>
@@ -73,14 +81,12 @@ const Home = () => {
       </div>
       <h2 className='content__title'>Все пиццы</h2>
       <div className='content__items'>
-        {loading ? (
+        {status === 'loading' ? (
           [...new Array(6)].map((_, index) => {
             return <Skeleton key={index} />
           })
         ) : (
           <>
-            {error && <p>{error.message}</p>}
-
             {items &&
               items.map((pizza) => {
                 return <PizzaBlock key={pizza.id} {...pizza} />

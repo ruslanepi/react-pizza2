@@ -13,7 +13,7 @@ const PizzaBlock = (props) => {
   const countOfType = cartItem.reduce((sum, item) => {
     return item.count + sum
   }, 0)
-  console.log(countOfType)
+
   const [activeType, setActiveType] = useState(0)
   const [activeSize, setActiveSize] = useState(0)
 
