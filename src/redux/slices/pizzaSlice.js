@@ -14,7 +14,9 @@ const initialState = {
 const pizzaSlice = createSlice({
   name: 'pizza',
   initialState,
-  reducers: {},
+  reducers: {
+    setItems() {},
+  },
 
   extraReducers: (builder) => {
     builder.addCase(fetchPizzas.pending, (state) => {

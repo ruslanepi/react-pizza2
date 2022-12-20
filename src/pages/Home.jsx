@@ -24,21 +24,20 @@ const Home = () => {
 
   const { items, status } = useSelector((state) => state.pizza)
   const { activeCategoryId, activeSortType } = useSelector((state) => state.filter)
-
+  let currentUrl = ''
+  const currentActiveCategory = activeCategoryId > 0 ? 'category' : ''
+  if (searchValue) {
+    currentUrl = `${dataUrl}?search=${searchValue}`
+  } else {
+    currentUrl = `${dataUrl}?${currentActiveCategory}=${activeCategoryId}&sortBy=${activeSortType.sortBy}&order=asc`
+  }
   const getPizzas = async () => {
-    let currentUrl = ''
-    const currentActiveCategory = activeCategoryId > 0 ? 'category' : ''
-    if (searchValue) {
-      currentUrl = `${dataUrl}?search=${searchValue}`
-    } else {
-      currentUrl = `${dataUrl}?${currentActiveCategory}=${activeCategoryId}&sortBy=${activeSortType.sortBy}&order=asc`
-    }
-
     dispatch(fetchPizzas(currentUrl))
   }
 
   //парсинг строки из url, обновление state ИЗ url
   useEffect(() => {
+    console.log('1ый')
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1))
       console.log(params)
@@ -53,25 +52,28 @@ const Home = () => {
 
   //отработка qs, если изменили параметры и уже был первый рендер
   useEffect(() => {
+    console.log('2ой')
     if (isMounted.current) {
       const queryString = qs.stringify({
         categoryId: activeCategoryId,
         sortType: activeSortType.sortBy,
       })
+      console.log('2.1')
       navigate(`?${queryString}`)
     }
     isMounted.current = true
-  }, [activeCategoryId, activeSortType])
+  }, [activeCategoryId, activeSortType, searchValue])
 
   //запрос на пиццы
   useEffect(() => {
+    console.log('3ий')
     if (!isSearch.current) {
       getPizzas()
     }
     isSearch.current = false
 
     window.scroll(0, 0)
-  }, [])
+  }, [activeCategoryId, activeSortType, searchValue])
 
   return (
     <div className='container'>
