@@ -1,16 +1,15 @@
 import qs from "qs"; // библиотека для превращение объекта в строку для подстановки в url
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Categories from "../components/Categories";
 import Sorting from "../components/Sorting";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import NotFound from "./NotFound";
 
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectFilterData, setFilters } from "../redux/slices/filterSlice";
 
-import { SearchContext } from "../App";
 import { fetchPizzas, selectPizzaData } from "../redux/slices/pizzaSlice";
 
 const dataUrl = "https://63612c1eaf66cc87dc251bdc.mockapi.io/items";
@@ -101,7 +100,11 @@ const Home = () => {
           <>
             {items &&
               items.map((pizza) => {
-                return <PizzaBlock key={pizza.id} {...pizza} />;
+                return (
+                  <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
+                    <PizzaBlock {...pizza} />
+                  </Link>
+                );
               })}
           </>
         )}
