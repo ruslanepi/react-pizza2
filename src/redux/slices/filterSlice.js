@@ -29,6 +29,8 @@ const filterSlice = createSlice({
   },
 });
 
+export const selectSort = (state) => state.filter.activeSortType;
+export const selectActiveCategoryId = (state) => state.filter.activeCategoryId;
 export const selectFilterData = (state) => state.filter;
 
 export const {

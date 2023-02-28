@@ -1,8 +1,7 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 const CartEmpty = () => {
   return (
-    <div className='cart cart--empty'>
+    <div className="cart cart--empty">
       <h2>
         Корзина пустая <span>😕</span>
       </h2>
@@ -15,11 +14,11 @@ const CartEmpty = () => {
       <br />
       <br />
 
-      <Link to='/' className='button button--black'>
+      <Link to="/" className="button button--black">
         <span>Вернуться назад</span>
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default CartEmpty
+export default CartEmpty;

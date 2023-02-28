@@ -96,7 +96,7 @@ const Cart = () => {
           </div>
         </div>
         <div className="cart__items">
-          {items.map((item, index) => {
+          {items.map((item: any, index: number) => {
             return <CartItem key={index} uniqueItemId={item.uniqueItemId} />;
           })}
         </div>

@@ -78,5 +78,8 @@ export const selectCart = (state) => state.cart;
 export const selectCartItemById = (id) => (state) =>
   state.cart.items.filter((item) => item.id === id);
 
+export const selectCartItemByUniqueId = (uniqueItemId) => (state) =>
+  state.cart.items.find((item) => item.uniqueItemId === uniqueItemId);
+
 export const { addItem, removeItem, clearItem, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

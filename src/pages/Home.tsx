@@ -1,5 +1,5 @@
 import qs from "qs"; // библиотека для превращение объекта в строку для подстановки в url
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Categories from "../components/Categories";
 import Sorting from "../components/Sorting";
 import PizzaBlock from "../components/PizzaBlock";
@@ -35,7 +35,10 @@ const Home = () => {
 
   const getPizzas = async () => {
     console.log("получаем пиццы");
-    dispatch(fetchPizzas(currentUrl));
+    dispatch(
+      //@ts-ignore
+      fetchPizzas(currentUrl)
+    );
   };
 
   //парсинг строки из url, обновление state ИЗ url
@@ -99,12 +102,8 @@ const Home = () => {
         ) : (
           <>
             {items &&
-              items.map((pizza) => {
-                return (
-                  <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
-                    <PizzaBlock {...pizza} />
-                  </Link>
-                );
+              items.map((obj: any) => {
+                return <PizzaBlock key={obj.id} {...obj} />;
               })}
           </>
         )}
