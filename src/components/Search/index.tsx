@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useRef, useContext, useState } from "react";
+import { useRef, useState } from "react";
 import debounce from "lodash.debounce";
 
 import styles from "./Search.module.scss";
@@ -23,13 +23,18 @@ const Search = () => {
     []
   );
 
-  const onChangeInput = (event: any) => {
+  //test ts with onClick function
+  const clickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+    console.log(event.type);
+  };
+
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
   };
 
   return (
-    <div className={styles.root}>
+    <div onClick={clickHandler} className={styles.root}>
       <svg
         className={styles.icon}
         height="512px"
